@@ -1,5 +1,6 @@
 package com.example.Hatio.API.services;
 import com.example.Hatio.API.dal.ExchangeRateClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 public class CurrencyService {
     private final ExchangeRateClient exchangeRateClient;
 
+    @Autowired
     public CurrencyService(ExchangeRateClient exchangeRateClient) {
         this.exchangeRateClient = exchangeRateClient;
     }

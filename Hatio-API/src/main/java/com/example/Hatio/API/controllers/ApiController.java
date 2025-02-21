@@ -3,6 +3,7 @@ package com.example.Hatio.API.controllers;
 import com.example.Hatio.API.entity.RequestEntity;
 import com.example.Hatio.API.entity.ResponseEntity;
 import com.example.Hatio.API.services.CurrencyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -10,7 +11,12 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class ApiController {
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
+
+    @Autowired
+    public ApiController(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+    }
     @GetMapping("/rates")
     public List<Object> getCurrencyExchangeData(@RequestParam(defaultValue = "USD") String base) {
         return currencyService.exchangeRatesOfBaseCurrency(base);
