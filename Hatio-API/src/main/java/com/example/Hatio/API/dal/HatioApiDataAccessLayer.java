@@ -18,7 +18,7 @@ public class HatioApiDataAccessLayer {
     private final static String API_KEY="64ff3520ba36426c4a7caca76c5d9aa8";
 
     public List<Object> getExchangeRatesOfBaseCurrency(String baseCurrency) {
-        String apiUrl = "https://api.exchangeratesapi.io/v1/latest?access_key="+API_KEY;
+        String apiUrl = "https://api.exchangeratesapi.io/v1/latest?access_key="+API_KEY+"&base="+baseCurrency;
         saveCurrencyCodeInMap();
         if(currencyCodeMap.containsKey(baseCurrency)){
             String apiResponse = isApiAvailable(apiUrl);
