@@ -1,15 +1,9 @@
 package com.example.Hatio.API.dal;
 
-import com.example.Hatio.API.controllers.ApiController;
-import com.example.Hatio.API.entity.RequestEntity;
-import com.example.Hatio.API.entity.ResponseEntity;
+import com.example.Hatio.API.controllers.HatioApiController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -17,12 +11,13 @@ import java.io.InputStream;
 import java.util.*;
 
 @Component
-public class ExchangeRateClient {
+public class HatioApiDataAccessLayer {
 
     HashMap<String, Integer> currencyCodeMap = new HashMap<>();
     private double convertedAmount;
     private final static String API_KEY="64ff3520ba36426c4a7caca76c5d9aa8";
-    public List<Object> exchangeRatesOfBaseCurrency(String baseCurrency) {
+
+    public List<Object> getExchangeRatesOfBaseCurrency(String baseCurrency) {
         String apiUrl = "https://api.exchangeratesapi.io/v1/latest?access_key="+API_KEY;
         saveCurrencyCodeInMap();
         if(currencyCodeMap.containsKey(baseCurrency)){
@@ -35,9 +30,10 @@ public class ExchangeRateClient {
             Object apiData = restTemplate.getForObject(apiUrl, Object.class);
             return Arrays.asList(apiData);
         }
-        String message = "invalid base currency code";
+        String message = "Invalid base currency code";
         return new ArrayList<>(){{add(message);}};
     }
+
     public double postCurrencyExchangeRate(String from, String to) {
 
         String apiUrl = "https://api.exchangeratesapi.io/v1/latest?access_key="+API_KEY;
@@ -79,7 +75,7 @@ public class ExchangeRateClient {
     void saveCurrencyCodeInMap() {
         String resourcePath = "data.json";
         ObjectMapper objectMapper = new ObjectMapper();
-        InputStream inputStream = ApiController.class.getClassLoader().getResourceAsStream(resourcePath);
+        InputStream inputStream = HatioApiController.class.getClassLoader().getResourceAsStream(resourcePath);
         try {
             if (inputStream == null) {
                 throw new IllegalArgumentException("File not found: " + resourcePath);
